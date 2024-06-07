@@ -1,5 +1,5 @@
 from .DataManager import DataManager
-from ..Models.Country import Country
+from ..Models.Countries import Country
 
 class CountriesManager(DataManager):
     """

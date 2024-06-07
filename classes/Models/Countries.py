@@ -1,4 +1,4 @@
-class Country:
+class Countries:
     def __init__(self, data: dict):
         self.name = data['name']
         self.country_code = data['country_code']

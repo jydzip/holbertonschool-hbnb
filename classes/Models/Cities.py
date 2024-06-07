@@ -1,4 +1,4 @@
-class City:
+class Cities:
     def __init__(self, data:dict):
 
         self.id = data["id"]
