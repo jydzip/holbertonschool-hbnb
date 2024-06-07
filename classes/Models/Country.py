@@ -1,7 +1,7 @@
 class Country:
-    def __init__(self, name: str, country_code: str):
-        self.name = name
-        self.country_code = country_code
+    def __init__(self, data: dict):
+        self.name = data['name']
+        self.country_code = data['country_code']
     
     def __str__(self):
         return f"[Country] {self.country_code} # {self.name}"
