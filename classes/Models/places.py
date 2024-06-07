@@ -1,4 +1,4 @@
-class places:
+class Places:
     def __init__(self, id:int, name:str, adress:str, city_id:int, 
                  host_id:str, number_of_rooms:int, number_of_bathrooms:int,
                  price_per_night:int, max_guests:int, amenity_ids:list):
