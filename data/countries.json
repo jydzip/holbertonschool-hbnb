@@ -1,0 +1,10 @@
+{
+    "FR": {
+        "country_code": "FR",
+        "name": "France"
+    },
+    "RU": {
+        "country_code": "RU",
+        "name": "Russian"
+    }
+}
