@@ -10,12 +10,20 @@ $ cd holbertonschool-hbnb
 ## 1.2 Configuration environment
 - Create Python environment
 ```bash
+# For Ubuntu
 $ python3 -m venv .venv
+
+# For Windows
+$ python -m venv .venv
 ```
 
 - Activate Python environment
 ```bash
+# For Ubuntu
 $ source .venv/bin/activate
+
+# For Windows
+$ .venv/Scripts/activate.ps1
 ```
 
 - Install requirements
