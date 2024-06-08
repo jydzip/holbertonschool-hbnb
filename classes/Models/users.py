@@ -1,9 +1,14 @@
 class Users:
-    def __init__(self, id: int, username: str, password: str, email: str, first_name: str, last_name: str, age: int):
-        self.id = id
-        self.username = username
-        self.password = password
-        self.first_name = first_name
-        self.last_name = last_name
-        self.email = email
-        self.age = age
+    def __init__(self, data: dict):
+        self.id = data['id']
+        self.username = data['username']
+        self.password = data['password']
+        self.first_name = data['first_name']
+        self.last_name = data['last_name']
+        self.email = data['email']
+        self.age = data['age']
+
+    def __str__(self) -> str:
+        return (f"[Users] {self.id} /\ {self.username} /\ {self.password} /\\"
+                f" {self.first_name} /\ {self.last_name} /\ "
+                f"{self.email} /\ {self.age}")
