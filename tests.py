@@ -1,9 +1,9 @@
 from classes.Persistences.CountriesManager import CountriesManager
 
 countriesManager = CountriesManager()
-print(countriesManager.getCountry("FR"))
-countriesManager.updateCountry({
-    "country_code": "FR",
-    "name": "France"
+print(countriesManager.getCountry("RU"))
+countriesManager.createCountry({
+    "country_code": "RU",
+    "name": "Russian"
 })
-print(countriesManager.getCountry("FR"))
+print(countriesManager.getCountry("RU"))

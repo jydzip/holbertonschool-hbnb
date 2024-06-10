@@ -22,18 +22,20 @@ class DataManager(IPersistenceManager):
         with open(self._TABLE_PATH, 'r', encoding="utf-8") as file:
             datas: dict = json.load(file)
             entity_id = entity.get(self._TABLE_KEY_ID, None)
-            if entity_id not in datas:
-                raise TypeError ("not id")
-            
+            # if entity_id not in datas:
+            #     raise TypeError ("not id")
+
             entity_attrs = {attr: typ for attr, typ in self._TABLE_CLASS.__annotations__.items()}
             keys1 = set(entity_attrs.keys())
             keys2 = set(entity.keys())
             if keys1 != keys2:
-                raise ValueError ('----') 
+                raise Exception(
+                    "[{} # DataManager # _save()] Attributs list not same to excepted.".format(
+                        self._TABLE_CLASS.__name__,
+                    )
+                )
 
-            for key, value in entity.items():
-                # datas[1]["name"] = "Loic"
-                datas[entity_id][key] = value
+            datas[entity_id] = entity
 
             with open(self._TABLE_PATH, "w", encoding="utf-8") as file:
                 json.dump(datas, file, indent=4)    
@@ -65,10 +67,19 @@ class DataManager(IPersistenceManager):
             entity_attrs = {attr: typ for attr, typ in self._TABLE_CLASS.__annotations__.items()}
             for key, value in entity.items():
                 if key not in entity_attrs:
-                    raise TypeError ("key not in entity_attrs")
+                    raise Exception(
+                        "[{} # DataManager # _update()] Key not excepted in entity_attrs.".format(
+                            self._TABLE_CLASS.__name__,
+                        )
+                    )
                 if not isinstance(value, entity_attrs[key]):
-                    raise ValueError ("the value is not str")
-            
+                    raise Exception(
+                        "[{} # DataManager # _update()] Value not excepted {}.".format(
+                            self._TABLE_CLASS.__name__,
+                            entity_attrs[key]
+                        )
+                    )
+
             for key, value in entity.items():
                 # datas[1]["name"] = "Loic"
                 datas[entity_id][key] = value
