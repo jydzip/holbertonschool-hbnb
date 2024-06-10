@@ -18,9 +18,26 @@ class DataManager(IPersistenceManager):
                     )
                 )
 
-    def _save(self, entity):
-        # Logic to save entity to storage
-        pass
+    def _save(self, entity: dict):
+        with open(self._TABLE_PATH, 'r', encoding="utf-8") as file:
+            datas: dict = json.load(file)
+            entity_id = entity.get(self._TABLE_KEY_ID, None)
+            if entity_id not in datas:
+                raise TypeError ("not id")
+            
+            entity_attrs = {attr: typ for attr, typ in self._TABLE_CLASS.__annotations__.items()}
+            keys1 = set(entity_attrs.keys())
+            keys2 = set(entity.keys())
+            if keys1 != keys2:
+                raise ValueError ('----') 
+
+            for key, value in entity.items():
+                # datas[1]["name"] = "Loic"
+                datas[entity_id][key] = value
+
+            with open(self._TABLE_PATH, "w", encoding="utf-8") as file:
+                json.dump(datas, file, indent=4)    
+
 
     def _get(self, entity_id: int | str, entity_type=None):
         """
