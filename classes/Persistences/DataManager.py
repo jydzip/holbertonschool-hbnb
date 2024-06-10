@@ -36,9 +36,18 @@ class DataManager(IPersistenceManager):
         # Logic to update an entity in storage
         pass
 
-    def _delete(self, entity_id, entity_type):
-        # Logic to delete an entity from storage
-        pass
+    def _delete(self, entity_id, entity_type=None):
+        with open(self._TABLE_PATH, 'rw', encoding="utf-8") as file:
+            datas: dict = json.load(file)
+            if entity_id in datas:
+                del datas[entity_id]
+
+
+
+
+
+
+
 
     @property
     def _TABLE_PATH(self):
