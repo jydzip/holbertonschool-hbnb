@@ -4,4 +4,4 @@ class Countries:
         self.country_code = data['country_code']
     
     def __str__(self):
-        return f"[Country] {self.country_code} # {self.name}"
+        return f"[Country] {self.country_code} /\ {self.name}"

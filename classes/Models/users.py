@@ -9,6 +9,4 @@ class Users:
         self.age = data['age']
 
     def __str__(self) -> str:
-        return (f"[Users] {self.id} /\ {self.username} /\ {self.password} /\\"
-                f" {self.first_name} /\ {self.last_name} /\ "
-                f"{self.email} /\ {self.age}")
+        return (f"[Users] {self.id} /\ {self.username}")
