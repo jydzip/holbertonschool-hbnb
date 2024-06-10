@@ -1,12 +1,12 @@
 from .DataManager import DataManager
-from ..Models.Users import User
+from ..Models.Users import Users
 
 class UsersManager(DataManager):
     """
         Users Manager.
     """
     _TABLE_DB = "Users"
-    _TABLE_CLASS = User
+    _TABLE_CLASS = Users
 
-    def getUser(self, User_id:int) -> (User | None):
+    def getUser(self, User_id:int) -> (Users | None):
         return self._get(User_id)
