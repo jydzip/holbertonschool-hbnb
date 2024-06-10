@@ -1,6 +1,16 @@
 class Places:
+    id: int
+    name: str
+    adress: str
+    city_id: int
+    host_id: int
+    number_of_rooms: int
+    number_of_bathrooms: int
+    price_per_night: int
+    max_guests: int
+    amenity_ids: list
+
     def __init__(self, data:dict):
-        
         self.id = data['id']
         self.name = data['name']
         self.adress = data['adress']

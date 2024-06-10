@@ -5,12 +5,18 @@ from .IPersistenceManager import IPersistenceManager
 class DataManager(IPersistenceManager):
     _TABLE_DB = None
     _TABLE_CLASS = None
+    _TABLE_KEY_ID = None
 
     def __init__(self):
-        if not self._TABLE_DB:
-            raise Exception("[DataManager#Error] _TABLE_DB not defined.")
-        if not self._TABLE_CLASS:
-            raise Exception("[DataManager#Error] _TABLE_CLASS not defined.")
+        for attr_name in ['_TABLE_DB', '_TABLE_CLASS', '_TABLE_KEY_ID']:
+            attr_value = getattr(self, attr_name, None)
+            if not attr_value:
+                raise Exception(
+                    "[{} # DataManager # Error] {} not defined.".format(
+                        self._TABLE_CLASS.__name__ if self._TABLE_CLASS != None else "None",
+                        attr_name
+                    )
+                )
 
     def _save(self, entity):
         # Logic to save entity to storage
@@ -35,7 +41,7 @@ class DataManager(IPersistenceManager):
     def _update(self, entity: dict):
         with open(self._TABLE_PATH, 'r', encoding="utf-8") as file:
             datas: dict = json.load(file)
-            entity_id = entity.get("id")
+            entity_id = entity.get(self._TABLE_KEY_ID, None)
             if entity_id not in datas:
                 raise TypeError ("not id")
 
@@ -43,7 +49,7 @@ class DataManager(IPersistenceManager):
             for key, value in entity.items():
                 if key not in entity_attrs:
                     raise TypeError ("key not in entity_attrs")
-                if not isinstance(value, entity_attrs):
+                if not isinstance(value, entity_attrs[key]):
                     raise ValueError ("the value is not str")
             
             for key, value in entity.items():
@@ -60,8 +66,6 @@ class DataManager(IPersistenceManager):
                 del datas[entity_id]
                 with open(self._TABLE_PATH, "w", encoding="utf-8") as file:
                     json.dump(datas, file, indent=4)
-
-
 
     @property
     def _TABLE_PATH(self):

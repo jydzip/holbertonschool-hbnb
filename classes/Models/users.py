@@ -1,4 +1,12 @@
 class Users:
+    id: int
+    username: str
+    password: str
+    first_name: str
+    last_name: str
+    email: str
+    age: str
+
     def __init__(self, data: dict):
         self.id = data['id']
         self.username = data['username']

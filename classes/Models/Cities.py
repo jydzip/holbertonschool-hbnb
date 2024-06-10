@@ -1,6 +1,9 @@
 class Cities:
-    def __init__(self, data:dict):
+    id: int
+    name: str
+    country_code: str
 
+    def __init__(self, data:dict):
         self.id = data["id"]
         self.name = data["name"]
         self.country_code = data["country_code"]

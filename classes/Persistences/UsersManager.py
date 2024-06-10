@@ -7,6 +7,7 @@ class UsersManager(DataManager):
     """
     _TABLE_DB = "Users"
     _TABLE_CLASS = Users
+    _TABLE_KEY_ID = "id"
 
     def getUser(self, User_id:int) -> (Users | None):
         return self._get(User_id)
