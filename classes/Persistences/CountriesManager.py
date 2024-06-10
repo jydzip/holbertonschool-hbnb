@@ -10,4 +10,6 @@ class CountriesManager(DataManager):
 
     def getCountry(self, country_code: str) -> (Countries | None):
         return self._get(country_code)
-        
+    
+    def delCountry(self, country_code: str) -> None:
+        return self._delete(country_code)

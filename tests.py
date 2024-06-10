@@ -1,5 +1,4 @@
 from classes.Persistences.CountriesManager import CountriesManager
 
-
 countriesManager = CountriesManager()
-print(countriesManager.getCountry("RU"))
+print(countriesManager.delCountry("RU"))

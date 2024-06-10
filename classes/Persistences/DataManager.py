@@ -37,15 +37,12 @@ class DataManager(IPersistenceManager):
         pass
 
     def _delete(self, entity_id, entity_type=None):
-        with open(self._TABLE_PATH, 'rw', encoding="utf-8") as file:
+        with open(self._TABLE_PATH, 'r', encoding="utf-8") as file:
             datas: dict = json.load(file)
             if entity_id in datas:
                 del datas[entity_id]
-
-
-
-
-
+                with open(self._TABLE_PATH, "w", encoding="utf-8") as file:
+                    json.dump(datas, file, indent=4)
 
 
 
