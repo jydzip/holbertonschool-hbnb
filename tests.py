@@ -7,3 +7,8 @@ countriesManager.createCountry({
     "name": "Russian"
 })
 print(countriesManager.getCountry("RU"))
+countriesManager.updateCountry({
+    "country_code": "RU",
+    "name": "Russie"
+})
+print(countriesManager.getCountry("RU"))

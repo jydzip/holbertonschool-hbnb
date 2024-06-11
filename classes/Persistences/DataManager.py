@@ -19,6 +19,13 @@ class DataManager(IPersistenceManager):
                 )
 
     def _save(self, entity: dict):
+        """
+            Logic to save entity to storage.
+            Arguments:
+                entity (dict): Data of the entity to save.
+            Return:
+                Entity in the "database" saved.
+        """
         with open(self._TABLE_PATH, 'r', encoding="utf-8") as file:
             datas: dict = json.load(file)
             entity_id = entity.get(self._TABLE_KEY_ID, None)
@@ -38,7 +45,9 @@ class DataManager(IPersistenceManager):
             datas[entity_id] = entity
 
             with open(self._TABLE_PATH, "w", encoding="utf-8") as file:
-                json.dump(datas, file, indent=4)    
+                json.dump(datas, file, indent=4)
+
+        return self._get(entity_id)  
 
 
     def _get(self, entity_id: int | str, entity_type=None):
@@ -58,11 +67,22 @@ class DataManager(IPersistenceManager):
             return self._TABLE_CLASS(data)
 
     def _update(self, entity: dict):
+        """
+            Logic to update an entity from storage.
+            Arguments:
+                entity (dict): Data of the entity to save.
+            Return:
+                Entity in the "database" updated.
+        """
         with open(self._TABLE_PATH, 'r', encoding="utf-8") as file:
             datas: dict = json.load(file)
             entity_id = entity.get(self._TABLE_KEY_ID, None)
             if entity_id not in datas:
-                raise TypeError ("not id")
+                raise Exception(
+                    "[{} # DataManager # _update()] ID entity not found.".format(
+                        self._TABLE_CLASS.__name__,
+                    )
+                )
 
             entity_attrs = {attr: typ for attr, typ in self._TABLE_CLASS.__annotations__.items()}
             for key, value in entity.items():
@@ -82,12 +102,21 @@ class DataManager(IPersistenceManager):
 
             for key, value in entity.items():
                 # datas[1]["name"] = "Loic"
-                datas[entity_id][key] = value
+                if key != self._TABLE_KEY_ID:
+                    datas[entity_id][key] = value
 
             with open(self._TABLE_PATH, "w", encoding="utf-8") as file:
                 json.dump(datas, file, indent=4)
 
-    def _delete(self, entity_id, entity_type=None):
+        return self._get(entity_id)
+
+    def _delete(self, entity_id, entity_type=None) -> None:
+        """
+            Logic to delete an entity from storage.
+            Arguments:
+                entity_id (int | str): Entity ID.
+                entity_type (str): ???
+        """
         with open(self._TABLE_PATH, 'r', encoding="utf-8") as file:
             datas: dict = json.load(file)
             if entity_id in datas:
