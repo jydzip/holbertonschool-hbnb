@@ -65,7 +65,7 @@ class DataManager(IPersistenceManager):
         """
         with open(self._TABLE_PATH, "r", encoding="utf-8") as file:
             datas: dict = json.load(file)
-            data = datas.get(entity_id, None)
+            data = datas.get(str(entity_id), None)
             if not data:
                 return None
             return self._TABLE_CLASS(data)
