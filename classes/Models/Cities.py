@@ -2,7 +2,7 @@ from classes.Persistences.CountriesManager import CountriesManager
 from .ModelBase import ModelBase
 
 class Cities(ModelBase):
-    id: int
+    id: str
     name: str
     country_code: str
 

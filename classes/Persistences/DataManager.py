@@ -1,5 +1,6 @@
 import json
 import datetime
+import uuid 
 
 
 from .IPersistenceManager import IPersistenceManager
@@ -28,6 +29,7 @@ class DataManager(IPersistenceManager):
             Return:
                 Entity in the "database" saved.
         """
+        entity['id'] = str(uuid.uuid4())
         with open(self._TABLE_PATH, 'r', encoding="utf-8") as file:
             datas: dict = json.load(file)
             entity_id = entity.get(self._TABLE_KEY_ID, None)
@@ -44,14 +46,17 @@ class DataManager(IPersistenceManager):
                     )
                 )
 
-            entity["created_at"] = datetime.datetime.now()
-            entity["updated_at"] = datetime.datetime.now()
+            entity["created_at"] = str(datetime.datetime.now())
+            entity["updated_at"] = str(datetime.datetime.now())
             datas[entity_id] = entity
 
             with open(self._TABLE_PATH, "w", encoding="utf-8") as file:
                 json.dump(datas, file, indent=4)
 
         return self._get(entity_id)  
+
+
+
 
 
     def _get(self, entity_id: int | str, entity_type=None):
@@ -70,6 +75,8 @@ class DataManager(IPersistenceManager):
                 return None
             return self._TABLE_CLASS(data)
 
+
+
     def _update(self, entity: dict):
         """
             Logic to update an entity from storage.
@@ -78,7 +85,7 @@ class DataManager(IPersistenceManager):
             Return:
                 Entity in the "database" updated.
         """
-        entity["updated_at"] = datetime.datetime.now()
+        entity["updated_at"] = str(datetime.datetime.now())
 
         with open(self._TABLE_PATH, 'r', encoding="utf-8") as file:
             datas: dict = json.load(file)
@@ -90,11 +97,13 @@ class DataManager(IPersistenceManager):
                     )
                 )
 
+            """
             entity_attrs = {attr: typ for attr, typ in self._TABLE_CLASS.__annotations__.items()}
             for key, value in entity.items():
                 if key not in entity_attrs:
                     raise Exception(
-                        "[{} # DataManager # _update()] Key not excepted in entity_attrs.".format(
+                        "[{} # DataManager # _update()] Key {} not excepted in entity_attrs.".format(
+                            
                             self._TABLE_CLASS.__name__,
                         )
                     )
@@ -105,6 +114,7 @@ class DataManager(IPersistenceManager):
                             entity_attrs[key]
                         )
                     )
+        """
 
             for key, value in entity.items():
                 # datas[1]["name"] = "Loic"

@@ -1,4 +1,3 @@
 class ModelBase:
-    created_at = None
-    updated_at = None
-    
+    __created_at = None
+    __updated_at = None

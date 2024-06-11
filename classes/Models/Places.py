@@ -1,28 +1,28 @@
 from ModelBase import ModelBase
 
 class Places(ModelBase):
-    id: int
-    name: str
-    adress: str
-    city_id: int
-    host_id: int
-    number_of_rooms: int
-    number_of_bathrooms: int
-    price_per_night: int
-    max_guests: int
-    amenity_ids: list
+    __id: str
+    __name: str
+    __adress: str
+    __city_id: int
+    __host_id: int
+    __number_of_rooms: int
+    __number_of_bathrooms: int
+    __price_per_night: int
+    __max_guests: int
+    __amenity_ids: list
 
     def __init__(self, data:dict):
-        self.id = data['id']
-        self.name = data['name']
-        self.adress = data['adress']
-        self.city_id = data['city_id']
-        self.host_id = data['host_id']
-        self.number_of_rooms = data['number_of_rooms']
-        self.number_of_bathrooms = data['number_of_bathrooms']
-        self.price_per_night = data['price_per_night']
-        self.max_guests = data['max_guests']
-        self.amenity_ids = data['amenity_ids']
+        self.__id = data['id']
+        self.__name = data['name']
+        self.__adress = data['adress']
+        self.__city_id = data['city_id']
+        self.__host_id = data['host_id']
+        self.__number_of_rooms = data['number_of_rooms']
+        self.__number_of_bathrooms = data['number_of_bathrooms']
+        self.__price_per_night = data['price_per_night']
+        self.__max_guests = data['max_guests']
+        self.__amenity_ids = data['amenity_ids']
 
     def __str__(self) -> str:
-        return (f"[Place] {self.id} /\ {self.name}")
+        return (f"[Place] {self.__id} /\ {self.__name}")

@@ -8,3 +8,12 @@ class CitiesManager(DataManager):
 
     def getCity(self, city_id:int) -> (Cities | None):
         return self._get(city_id)
+
+    def deleteCity(self, city_id: str) -> None:
+        return self._delete(city_id)
+
+    def updateCity(self, city_data: dict) -> None:
+        return self._update(city_data)
+
+    def createCity(self, city_data: dict) -> None:
+        return self._save(city_data)
