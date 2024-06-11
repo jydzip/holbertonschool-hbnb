@@ -1,4 +1,6 @@
 import json
+import datetime
+
 
 from .IPersistenceManager import IPersistenceManager
 
@@ -42,6 +44,8 @@ class DataManager(IPersistenceManager):
                     )
                 )
 
+            entity["created_at"] = datetime.datetime.now()
+            entity["updated_at"] = datetime.datetime.now()
             datas[entity_id] = entity
 
             with open(self._TABLE_PATH, "w", encoding="utf-8") as file:
@@ -74,6 +78,8 @@ class DataManager(IPersistenceManager):
             Return:
                 Entity in the "database" updated.
         """
+        entity["updated_at"] = datetime.datetime.now()
+
         with open(self._TABLE_PATH, 'r', encoding="utf-8") as file:
             datas: dict = json.load(file)
             entity_id = entity.get(self._TABLE_KEY_ID, None)
