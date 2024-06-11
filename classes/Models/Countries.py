@@ -1,4 +1,6 @@
-class Countries:
+from ModelBase import ModelBase
+
+class Countries(ModelBase):
     name: str
     country_code: str
 

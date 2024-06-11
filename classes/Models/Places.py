@@ -1,4 +1,6 @@
-class Places:
+from ModelBase import ModelBase
+
+class Places(ModelBase):
     id: int
     name: str
     adress: str

@@ -1,4 +1,6 @@
-class Cities:
+from ModelBase import ModelBase
+
+class Cities(ModelBase):
     id: int
     name: str
     country_code: str

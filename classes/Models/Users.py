@@ -1,4 +1,6 @@
-class Users:
+from ModelBase import ModelBase
+
+class Users(ModelBase):
     id: int
     username: str
     password: str
