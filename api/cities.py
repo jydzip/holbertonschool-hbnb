@@ -15,7 +15,7 @@ cities = api.model(
 )
 
 @api.route("/")
-class DogList(Resource):
+class CitiesList(Resource):
     @api.doc("list_Cities")
     @api.marshal_list_with(cities)
     def get(self):

@@ -14,13 +14,14 @@ countries = api.model(
 
 
 @api.route("/")
-class DogList(Resource):
+class CountriesList(Resource):
     @api.doc("list_countries")
     @api.marshal_list_with(countries)
     def get(self):
         """List all countries"""
         return CountriesManager().getCountry("FR").toJSON()
     
+
 
 @api.route("/<code>")
 @api.param("code", "The code identifier")
