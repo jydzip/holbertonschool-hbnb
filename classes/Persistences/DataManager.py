@@ -57,6 +57,19 @@ class DataManager(IPersistenceManager):
 
 
 
+    def _all(self):
+        """
+            Logic to retrieve all entities.
+            Return:
+                Entities list in the "database".
+        """
+        entities = []
+        with open(self._TABLE_PATH, "r", encoding="utf-8") as file:
+            datas: dict = json.load(file)
+            for data in datas.values():
+                entities.append(self._TABLE_CLASS(data))
+        return entities
+
 
 
     def _get(self, entity_id: int | str, entity_type=None):

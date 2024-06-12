@@ -1,3 +1,4 @@
+from typing import List
 from .DataManager import DataManager
 from ..Models.Countries import Countries
 
@@ -9,6 +10,9 @@ class CountriesManager(DataManager):
     _TABLE_CLASS = Countries
     _TABLE_KEY_ID = "country_code"
 
+    def getCountries(self) -> List[Countries]:
+        return self._all()
+    
     def getCountry(self, country_code: str) -> (Countries | None):
         return self._get(country_code)
     

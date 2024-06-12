@@ -3,22 +3,21 @@ from flask_restx import Namespace, Resource, fields
 from classes.Persistences.PlacesManager import PlacesManager
 
 
-api = Namespace("places", description="places related operations")
-
+api = Namespace("places", description="Places related operations")
 
 places = api.model(
-    "places",
+    "Places",
     {
         "id": fields.String(required=True, description="The places id"),
         "name": fields.String(required=True, description="The places name"),
         "adress": fields.String(required=True, description="The places adress"),
-        "city_id": fields.String(required=True, description="The places city_id"),
-        "host_id": fields.String(required=True, description="The places host_id"),
-        "number_of_rooms": fields.String(required=True, description="The places number_of_rooms"),
-        "number_of_bathrooms": fields.String(required=True, description="The places number_of_bathrooms"),
-        "price_per_night": fields.String(required=True, description="The places price_per_night"),
-        "max_guests": fields.String(required=True, description="The places max_guests"),
-        "amenity_ids": fields.String(required=True, description="The places amenity_ids"),
+        "city_id": fields.Integer(required=True, description="The places city_id"),
+        "host_id": fields.Integer(required=True, description="The places host_id"),
+        "number_of_rooms": fields.Integer(required=True, description="The places number_of_rooms"),
+        "number_of_bathrooms": fields.Integer(required=True, description="The places number_of_bathrooms"),
+        "price_per_night": fields.Integer(required=True, description="The places price_per_night"),
+        "max_guests": fields.Integer(required=True, description="The places max_guests"),
+        # "amenity_ids": fields.String(required=True, description="The places amenity_ids"),
     },
 )
 
@@ -29,15 +28,21 @@ class PlacesList(Resource):
     @api.marshal_list_with(places)
     def get(self):
         """List all places"""
-        return PlacesManager().getPlace("FR").toJSON()
+        places = PlacesManager().getPlaces()
+        if not places:
+            return []
+        return [place.toJSON() for place in places]
 
 
-@api.route("/<code>")
-@api.param("code", "The code identifier")
-@api.response(404, "code not found")
-class Countries_code(Resource):
-    @api.doc("")
+@api.route("/<id>")
+@api.param("id", "The place identifier")
+@api.response(404, "Place not found")
+class PlacesRetrieve(Resource):
+    @api.doc("get_places")
     @api.marshal_with(places)
-    def get(self, code):
-        """Fetch a Places given its identifier"""
-        return PlacesManager().getPlace(code).toJSON() 
+    def get(self, id):
+        """Fetch a place given its identifier"""
+        place = PlacesManager().getPlace(id)
+        if place:
+            return place.toJSON()
+        api.abort(404, "Place {} doesn't exist".format(id))

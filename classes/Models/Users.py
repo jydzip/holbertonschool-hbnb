@@ -1,4 +1,4 @@
-from ModelBase import ModelBase
+from .ModelBase import ModelBase
 
 class Users(ModelBase):
     __id: str
