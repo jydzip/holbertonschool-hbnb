@@ -3,7 +3,7 @@ from flask_restx import Namespace, Resource, fields
 from classes.Persistences.PlacesManager import PlacesManager
 
 
-api = Namespace("countries", description="Countries related operations")
+api = Namespace("places", description="places related operations")
 
 
 places = api.model(
