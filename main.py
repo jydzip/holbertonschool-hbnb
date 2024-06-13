@@ -5,6 +5,8 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 from api.countries import api as countries_API
 from api.cities import api as cities_API
 from api.places import api as places_API
+from api.users import api as users_API
+
 
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app)
@@ -18,6 +20,7 @@ api = Api(
 api.add_namespace(countries_API)
 api.add_namespace(cities_API)
 api.add_namespace(places_API)
+api.add_namespace(users_API)
 
 api.init_app(app)
 

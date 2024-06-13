@@ -18,5 +18,14 @@ class Users(ModelBase):
         self.__email = data['email']
         self.__age = data['age']
 
+    def toJSON(self):
+        return {
+            "id": self.__id,
+            "username": self.__username,
+            "first_name":self.__first_name,
+            "last_name":self.__last_name,
+            "email":self.__email,
+        }
+
     def __str__(self) -> str:
         return (f"[Users] {self.__id} /\ {self.__username}")
