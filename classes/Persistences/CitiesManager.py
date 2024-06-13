@@ -10,6 +10,14 @@ class CitiesManager(DataManager):
     def getCities(self) -> List[Cities]:
         return self._all()
 
+    def getCitiesByCountry(self, country_code: str) -> List[Cities]:
+        cities = self.getCities()
+        cities_result = []
+        for city in cities:
+            if city.country_code == country_code:
+                cities_result.append(city)
+        return cities_result
+
     def getCity(self, city_id:int) -> (Cities | None):
         return self._get(city_id)
 

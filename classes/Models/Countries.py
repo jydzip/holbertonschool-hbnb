@@ -1,4 +1,5 @@
 from .ModelBase import ModelBase
+from ..Persistences.CitiesManager import CitiesManager
 
 class Countries(ModelBase):
     __name: str
@@ -7,6 +8,9 @@ class Countries(ModelBase):
     def __init__(self, data: dict):
         self.__name = data['name']
         self.__country_code = data['country_code']
+    
+    def getCities(self):
+        return CitiesManager().getCitiesByCountry(self.__country_code)
     
     def toJSON(self):
         return {

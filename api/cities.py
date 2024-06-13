@@ -1,24 +1,31 @@
 from flask_restx import Namespace, Resource, fields
 from classes.Persistences.CitiesManager import CitiesManager
-from .countries import countries
 
 api = Namespace("cities", description="Cities related operations")
 
 
-cities = api.model(
+cities__country_model = api.model(
+    "Cities__Country",
+    {
+        "name": fields.String(required=True, description="The country identifier"),
+        "code": fields.String(required=True, description="The country code"),
+    },
+)
+cities_model = api.model(
     "Cities",
     {
         "id": fields.String(required=True, description="The city id"),
         "name": fields.String(required=True, description="The city name"),
         "country_code": fields.String(required=True, description="The city country_code"),
-        "country": fields.Nested(countries)
+        "country": fields.Nested(cities__country_model)
     },
 )
+
 
 @api.route("/")
 class CitiesList(Resource):
     @api.doc("list_cities")
-    @api.marshal_list_with(cities)
+    @api.marshal_list_with(cities_model)
     def get(self):
         """List all cities"""
         cities = CitiesManager().getCities()
@@ -26,12 +33,13 @@ class CitiesList(Resource):
             return []
         return [city.toJSON() for city in cities]
 
+
 @api.route("/<id>")
 @api.param("id", "The city identifier")
 @api.response(404, "City not found")
 class CitiesRetrieve(Resource):
     @api.doc("get_cities")
-    @api.marshal_with(cities)
+    @api.marshal_with(cities_model)
     def get(self, id):
         """Fetch a city given its identifier"""
         city = CitiesManager().getCity(id)
