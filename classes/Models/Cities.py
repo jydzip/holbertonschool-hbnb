@@ -11,9 +11,52 @@ class Cities(ModelBase):
         self.__country_code = data["country_code"]
     
     @property
+    def id(self):
+        """Get the id of city."""
+        return self.__id
+    
+    @property
     def country_code(self):
         """Get the country_code of city."""
         return self.__country_code
+    
+    @property
+    def name(self):
+        """Get the name of city."""
+        return self.__name
+
+    @staticmethod
+    def validate_request_data(data: dict, partial=False) -> None:
+        entity_attrs = {attr: typ for attr, typ in Cities.__annotations__.items()}
+        for key in ["name", "country_code"]:
+            key_complete = f"_Cities__{key}"
+            entity_attr = entity_attrs.get(key_complete)
+            data_value = data.get(key)
+
+            if partial and not data_value:
+                continue
+
+            if not entity_attr:
+                raise ValueError(f"{key}: is missing.")
+            if not isinstance(data_value, entity_attr):
+                raise ValueError(f"{key}: value {entity_attr} is excepted.")
+
+    @staticmethod
+    def validate_exist_country(country_code: str):
+        from classes.Persistences.CountriesManager import CountriesManager
+        country = CountriesManager().getCountry(country_code)
+        if not country:
+            raise ValueError("country_code: is not a valid country.")
+    
+    @staticmethod
+    def validate_unique_city(name: str, country_code: str, id_city: str = None):
+        from classes.Persistences.CitiesManager import CitiesManager
+        cities = CitiesManager().getCitiesByCountry(country_code)
+        for city in cities:
+            if id_city and id_city == city.__id:
+                continue
+            if city.country_code == country_code and city.name == name:
+                raise TypeError("Already exist city with same name and same country.")
 
     def toJSON(self):
         from classes.Persistences.CountriesManager import CountriesManager

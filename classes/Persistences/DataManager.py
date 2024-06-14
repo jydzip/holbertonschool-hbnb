@@ -36,15 +36,15 @@ class DataManager(IPersistenceManager):
             # if entity_id not in datas:
             #     raise TypeError ("not id")
 
-            entity_attrs = {attr: typ for attr, typ in self._TABLE_CLASS.__annotations__.items()}
-            keys1 = set(entity_attrs.keys())
-            keys2 = set(entity.keys())
-            if keys1 != keys2:
-                raise Exception(
-                    "[{} # DataManager # _save()] Attributs list not same to excepted.".format(
-                        self._TABLE_CLASS.__name__,
-                    )
-                )
+            # entity_attrs = {attr: typ for attr, typ in self._TABLE_CLASS.__annotations__.items()}
+            # keys1 = set(entity_attrs.keys())
+            # keys2 = set(entity.keys())
+            # if keys1 != keys2:
+            #     raise Exception(
+            #         "[{} # DataManager # _save()] Attributs list not same to excepted.".format(
+            #             self._TABLE_CLASS.__name__,
+            #         )
+            #     )
 
             entity["created_at"] = str(datetime.datetime.now())
             entity["updated_at"] = str(datetime.datetime.now())
@@ -127,7 +127,7 @@ class DataManager(IPersistenceManager):
                             entity_attrs[key]
                         )
                     )
-        """
+            """
 
             for key, value in entity.items():
                 # datas[1]["name"] = "Loic"

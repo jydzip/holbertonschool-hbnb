@@ -25,7 +25,25 @@ class CitiesManager(DataManager):
         return self._delete(city_id)
 
     def updateCity(self, city_data: dict) -> None:
+        original_city = self.getCity(city_data["id"])
+
+        Cities.validate_request_data(city_data, True)
+
+        name = original_city.name
+        country_code = original_city.country_code
+        if city_data.get("name"):
+            name = city_data.get("name")
+        if city_data.get("country_code"):
+            Cities.validate_exist_country(country_code)
+            country_code = city_data.get("country_code")
+
+        Cities.validate_unique_city(name, country_code, original_city.id)
+
         return self._update(city_data)
 
     def createCity(self, city_data: dict) -> None:
+        Cities.validate_request_data(city_data)
+        Cities.validate_exist_country(city_data['country_code'])
+        Cities.validate_unique_city(city_data['name'], city_data['country_code'])
+
         return self._save(city_data)
