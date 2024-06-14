@@ -25,6 +25,12 @@ class Cities(ModelBase):
         """Get the name of city."""
         return self.__name
 
+    @property
+    def country(self):
+        """Get the country class of city."""
+        from classes.Persistences.CountriesManager import CountriesManager
+        return CountriesManager().getCountry(self.__country_code)
+
     @staticmethod
     def validate_request_data(data: dict, partial=False) -> None:
         entity_attrs = {attr: typ for attr, typ in Cities.__annotations__.items()}
@@ -59,14 +65,11 @@ class Cities(ModelBase):
                 raise TypeError("Already exist city with same name and same country.")
 
     def toJSON(self):
-        from classes.Persistences.CountriesManager import CountriesManager
-
-        country = CountriesManager().getCountry(self.__country_code)
         return {
             "id": self.__id,
             "name": self.__name,
             "country_code": self.__country_code,
-            "country": country.toJSON()
+            "country": self.country.toJSON()
         }
 
     def __str__(self) -> str:
