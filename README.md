@@ -30,3 +30,14 @@ $ .venv/Scripts/activate.ps1
 ```bash
 $ pip install -r requirements.txt
 ```
+
+## Code formater
+- Check if reformatted possible
+```bash
+$ black **/*.py --check
+```
+
+- Reformatted automatically files
+```bash
+$ black **/*.py
+```
