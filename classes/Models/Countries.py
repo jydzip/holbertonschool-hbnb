@@ -12,6 +12,16 @@ class Countries(ModelBase):
     def getCities(self):
         return CitiesManager().getCitiesByCountry(self.__country_code)
     
+    @property
+    def name(self):
+        """Get the name of country."""
+        return self.__name
+
+    @property
+    def country_code(self):
+        """Get the country_code of country."""
+        return self.__country_code
+
     def toJSON(self):
         return {
             "name": self.__name,

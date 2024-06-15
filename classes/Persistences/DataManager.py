@@ -6,11 +6,14 @@ import uuid
 from .IPersistenceManager import IPersistenceManager
 
 class DataManager(IPersistenceManager):
+    _TESTS_MODE = False
     _TABLE_DB = None
     _TABLE_CLASS = None
     _TABLE_KEY_ID = None
 
-    def __init__(self):
+    def __init__(self, is_tests = False):
+        self._TESTS_MODE = is_tests
+
         for attr_name in ['_TABLE_DB', '_TABLE_CLASS', '_TABLE_KEY_ID']:
             attr_value = getattr(self, attr_name, None)
             if not attr_value:
@@ -21,6 +24,22 @@ class DataManager(IPersistenceManager):
                     )
                 )
 
+    def _read_json(self) -> dict:
+        """
+            Read a json file.
+            Return:
+                Dictionnary of the "database".
+        """
+        with open(self._TABLE_PATH, 'r', encoding="utf-8") as file:
+            return json.load(file)
+
+    def _write_json(self, datas):
+        """
+            Write in a json file.
+        """
+        with open(self._TABLE_PATH, "w", encoding="utf-8") as file:
+            json.dump(datas, file, indent=4)
+
     def _save(self, entity: dict):
         """
             Logic to save entity to storage.
@@ -29,33 +48,16 @@ class DataManager(IPersistenceManager):
             Return:
                 Entity in the "database" saved.
         """
-        entity['id'] = str(uuid.uuid4())
-        with open(self._TABLE_PATH, 'r', encoding="utf-8") as file:
-            datas: dict = json.load(file)
-            entity_id = entity.get(self._TABLE_KEY_ID, None)
-            # if entity_id not in datas:
-            #     raise TypeError ("not id")
+        entity_id = str(uuid.uuid4())
+        entity['id'] = entity_id
+        entity["created_at"] = str(datetime.datetime.now())
+        entity["updated_at"] = str(datetime.datetime.now())
 
-            # entity_attrs = {attr: typ for attr, typ in self._TABLE_CLASS.__annotations__.items()}
-            # keys1 = set(entity_attrs.keys())
-            # keys2 = set(entity.keys())
-            # if keys1 != keys2:
-            #     raise Exception(
-            #         "[{} # DataManager # _save()] Attributs list not same to excepted.".format(
-            #             self._TABLE_CLASS.__name__,
-            #         )
-            #     )
+        datas = self._read_json()
+        datas[entity_id] = entity
+        self._write_json(datas)
 
-            entity["created_at"] = str(datetime.datetime.now())
-            entity["updated_at"] = str(datetime.datetime.now())
-            datas[entity_id] = entity
-
-            with open(self._TABLE_PATH, "w", encoding="utf-8") as file:
-                json.dump(datas, file, indent=4)
-
-        return self._get(entity_id)  
-
-
+        return self._get(entity_id)
 
     def _all(self):
         """
@@ -64,31 +66,24 @@ class DataManager(IPersistenceManager):
                 Entities list in the "database".
         """
         entities = []
-        with open(self._TABLE_PATH, "r", encoding="utf-8") as file:
-            datas: dict = json.load(file)
-            for data in datas.values():
-                entities.append(self._TABLE_CLASS(data))
+        datas = self._read_json()
+        for data in datas.values():
+            entities.append(self._TABLE_CLASS(data))
         return entities
 
-
-
-    def _get(self, entity_id: int | str, entity_type=None):
+    def _get(self, entity_id: int | str):
         """
             Logic to retrieve an entity based on ID and type.
             Arguments:
                 entity_id (int | str): Entity ID.
-                entity_type (str): ???
             Return:
                 Entity in the "database" or None if not exist.
         """
-        with open(self._TABLE_PATH, "r", encoding="utf-8") as file:
-            datas: dict = json.load(file)
-            data = datas.get(str(entity_id), None)
-            if not data:
-                return None
-            return self._TABLE_CLASS(data)
-
-
+        datas = self._read_json()
+        data = datas.get(str(entity_id), None)
+        if not data:
+            return None
+        return self._TABLE_CLASS(data)
 
     def _update(self, entity: dict):
         """
@@ -98,61 +93,44 @@ class DataManager(IPersistenceManager):
             Return:
                 Entity in the "database" updated.
         """
+        entity_id = entity.get(self._TABLE_KEY_ID, None)
+        if entity_id is None:
+            raise Exception(f"[{self._TABLE_CLASS.__name__} # DataManager # _update()] Missing entity ID.")
+
         entity["updated_at"] = str(datetime.datetime.now())
 
-        with open(self._TABLE_PATH, 'r', encoding="utf-8") as file:
-            datas: dict = json.load(file)
-            entity_id = entity.get(self._TABLE_KEY_ID, None)
-            if entity_id not in datas:
-                raise Exception(
-                    "[{} # DataManager # _update()] ID entity not found.".format(
-                        self._TABLE_CLASS.__name__,
-                    )
+        datas = self._read_json()
+        if entity_id not in datas:
+            raise Exception(
+                "[{} # DataManager # _update()] Entity not found.".format(
+                    self._TABLE_CLASS.__name__,
                 )
+            )
 
-            """
-            entity_attrs = {attr: typ for attr, typ in self._TABLE_CLASS.__annotations__.items()}
-            for key, value in entity.items():
-                if key not in entity_attrs:
-                    raise Exception(
-                        "[{} # DataManager # _update()] Key {} not excepted in entity_attrs.".format(
-                            
-                            self._TABLE_CLASS.__name__,
-                        )
-                    )
-                if not isinstance(value, entity_attrs[key]):
-                    raise Exception(
-                        "[{} # DataManager # _update()] Value not excepted {}.".format(
-                            self._TABLE_CLASS.__name__,
-                            entity_attrs[key]
-                        )
-                    )
-            """
+        for key, value in entity.items():
+            # datas[1]["name"] = "Loic"
+            if key != self._TABLE_KEY_ID:
+                datas[entity_id][key] = value
 
-            for key, value in entity.items():
-                # datas[1]["name"] = "Loic"
-                if key != self._TABLE_KEY_ID:
-                    datas[entity_id][key] = value
-
-            with open(self._TABLE_PATH, "w", encoding="utf-8") as file:
-                json.dump(datas, file, indent=4)
-
+        self._write_json(datas)
         return self._get(entity_id)
 
-    def _delete(self, entity_id, entity_type=None) -> None:
+    def _delete(self, entity_id) -> None:
         """
             Logic to delete an entity from storage.
             Arguments:
                 entity_id (int | str): Entity ID.
-                entity_type (str): ???
         """
-        with open(self._TABLE_PATH, 'r', encoding="utf-8") as file:
-            datas: dict = json.load(file)
-            if entity_id in datas:
-                del datas[entity_id]
-                with open(self._TABLE_PATH, "w", encoding="utf-8") as file:
-                    json.dump(datas, file, indent=4)
+        datas = self._read_json()
+        if entity_id in datas:
+            del datas[entity_id]
+            self._write_json(datas)
 
     @property
     def _TABLE_PATH(self):
+        """
+            Formate the path of the json file to manage.
+        """
+        if self._TESTS_MODE:
+            return f"data/tests/{self._TABLE_DB}.json"
         return f"data/{self._TABLE_DB}.json"

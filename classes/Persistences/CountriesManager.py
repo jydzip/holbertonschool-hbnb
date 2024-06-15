@@ -19,8 +19,8 @@ class CountriesManager(DataManager):
     def deleteCountry(self, country_code: str) -> None:
         return self._delete(country_code)
     
-    def updateCountry(self, country_data: dict) -> None:
+    def updateCountry(self, country_data: dict) -> Countries:
         return self._update(country_data)
 
-    def createCountry(self, country_data: dict) -> None:
+    def createCountry(self, country_data: dict) -> Countries:
         return self._save(country_data)
