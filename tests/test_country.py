@@ -8,6 +8,7 @@ class TestCountry(unittest.TestCase):
     def setUp(self):
         self.country_manager = CountriesManager(True)
 
+    def create_country_test(self):
         self.country1 = self.country_manager.createCountry({
             "name": "France",
             "country_code": "FR"
@@ -15,7 +16,11 @@ class TestCountry(unittest.TestCase):
         self.assertEqual(self.country1.name, "France")
         self.assertEqual(self.country1.country_code, "FR")
 
+    def test_create_country(self):
+        self.create_country_test()
+
     def test_update_name_country(self):
+        self.create_country_test()
         self.assertEqual(self.country1.name, "France")
 
         self.country1 = self.country_manager.updateCountry({
@@ -25,13 +30,14 @@ class TestCountry(unittest.TestCase):
         self.assertEqual(self.country1.name, "France Updated")
     
     def test_delete_country(self):
+        self.create_country_test()
         country1_before = self.country_manager.getCountry(self.country1.country_code)
         self.assertIsInstance(country1_before, Countries)
 
         self.country_manager.deleteCountry(self.country1.country_code)
 
         country1_after = self.country_manager.getCountry(self.country1.country_code)
-        self.assertIsInstance(country1_after, None)
+        self.assertIsNone(country1_after)
 
 
 if __name__ == '__main__':

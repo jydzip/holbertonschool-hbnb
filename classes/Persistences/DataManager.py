@@ -48,8 +48,11 @@ class DataManager(IPersistenceManager):
             Return:
                 Entity in the "database" saved.
         """
-        entity_id = str(uuid.uuid4())
-        entity['id'] = entity_id
+        if self._TABLE_KEY_ID == "id":
+            entity_id = str(uuid.uuid4())
+            entity['id'] = entity_id
+        else:
+            entity_id = entity.get(self._TABLE_KEY_ID)
         entity["created_at"] = str(datetime.datetime.now())
         entity["updated_at"] = str(datetime.datetime.now())
 

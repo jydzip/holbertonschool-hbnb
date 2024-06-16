@@ -6,6 +6,7 @@ class Countries(ModelBase):
     __country_code: str
 
     def __init__(self, data: dict):
+        super().__init__(data)
         self.__name = data['name']
         self.__country_code = data['country_code']
     
