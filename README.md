@@ -41,3 +41,8 @@ $ black **/*.py --check
 ```bash
 $ black **/*.py
 ```
+
+## Launch all tests
+```bash
+$ python -m unittest discover -p 'test_*.py'
+```

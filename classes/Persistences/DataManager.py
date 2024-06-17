@@ -1,6 +1,6 @@
 import json
 import datetime
-import uuid 
+import uuid
 
 
 from .IPersistenceManager import IPersistenceManager
@@ -11,8 +11,9 @@ class DataManager(IPersistenceManager):
     _TABLE_CLASS = None
     _TABLE_KEY_ID = None
 
-    def __init__(self, is_tests = False):
-        self._TESTS_MODE = is_tests
+    def __init__(self):
+        from main import app
+        self._TESTS_MODE = app.debug
 
         for attr_name in ['_TABLE_DB', '_TABLE_CLASS', '_TABLE_KEY_ID']:
             attr_value = getattr(self, attr_name, None)
@@ -137,3 +138,10 @@ class DataManager(IPersistenceManager):
         if self._TESTS_MODE:
             return f"data/tests/{self._TABLE_DB}.json"
         return f"data/{self._TABLE_DB}.json"
+    
+    def reset_data_tests(self):
+        """
+            Reset json file in tests folder,
+            for tests in clean conditions.
+        """
+        self._write_json({})

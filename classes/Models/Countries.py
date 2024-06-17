@@ -23,6 +23,11 @@ class Countries(ModelBase):
         """Get the country_code of country."""
         return self.__country_code
 
+    @property
+    def code(self):
+        """Get the country_code of country."""
+        return self.country_code
+
     def toJSON(self):
         return {
             "name": self.__name,

@@ -24,4 +24,5 @@ api.add_namespace(users_API)
 
 api.init_app(app)
 
-app.run(debug=True)
+if __name__ == "__main__":
+    app.run(debug=False)
