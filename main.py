@@ -6,6 +6,7 @@ from api.countries import api as countries_API
 from api.cities import api as cities_API
 from api.places import api as places_API
 from api.users import api as users_API
+from api.amenities import api as amenities_API
 
 
 app = Flask(__name__)
@@ -21,6 +22,7 @@ api.add_namespace(countries_API)
 api.add_namespace(cities_API)
 api.add_namespace(places_API)
 api.add_namespace(users_API)
+api.add_namespace(amenities_API)
 
 api.init_app(app)
 

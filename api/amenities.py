@@ -11,21 +11,20 @@ api = Namespace("amenities", description="")
 amenities_model = api.model(
     "Amenities", 
     {
-        "id": fields.String(required=True, description="The users id"),
-        "name": fields.String(required=True, description="The places name"),
+        "id": fields.String(required=True, description="The amenity id"),
+        "name": fields.String(required=True, description="The amenity name"),
     },
 )
 
 amenities_model_entry = api.model(
 
-    "amenitiesEntry",
+    "AmenitiesEntry",
     {
-        "name": fields.String(required=True, description="The city name")
+        "name": fields.String(required=True, description="The amenity name")
     }
 )
-
 amenities_edit_response = api.model(
-    "amenitiesEditResponse", 
+    "AmenitiesEditResponse", 
     {
         "message": fields.String(required=True, description="Message Response"),
         "data": fields.Nested(amenities_model),
@@ -33,7 +32,7 @@ amenities_edit_response = api.model(
 )
 
 amenities_model_error = api.model(
-    "amenitiesError", 
+    "AmenitiesError", 
     {
         "message": fields.String(required=True, description="Message response error"),
         "error": fields.String(required=True, description="Error status code"),
@@ -46,25 +45,25 @@ class AmenitiesList(Resource):
     @api.marshal_list_with(amenities_model)
     def get(self):
         """List all Amenity"""
-        amenities = AmenitiesManager().getAmenity()
+        amenities = AmenitiesManager().getAmenities()
         if not amenities:
             return []
         return [amenity.toJSON() for amenity in amenities]          
 
-    @api.doc('create_Amenities')
+    @api.doc('create_amenities')
     @api.expect(amenities_model_entry)
     @api.marshal_with(amenities_edit_response, code=201)
     @api.marshal_with(amenities_model_error, code=400)
     @api.marshal_with(amenities_model_error, code=409)
     def post(self):
-        """Create a amenities"""
+        """Create a amenity"""
         if not request.is_json:
             make_error(api, 400, "Missing JSON in request.")
 
         data: dict = request.json
 
         try:
-            new_amenity = AmenitiesManager().createCity({
+            new_amenity = AmenitiesManager().createAmenity({
                 "name": data.get("name", None)
             })
             return {
@@ -78,14 +77,14 @@ class AmenitiesList(Resource):
     
 @api.route("/<id>")
 @api.param("id", "The amenities identifier")
-@api.response(404, "amenities not found")
+@api.response(404, "Amenity not found")
 class AmenitiesRetrieve(Resource):
     @api.doc("get_amenities")
     @api.marshal_with(amenities_model)
     def get(self, id):
-        Amenity = AmenitiesManager().getAmenity(id)
-        if Amenity:
-            return Amenity()
+        amenity = AmenitiesManager().getAmenity(id)
+        if amenity:
+            return amenity
         api.abort(404, "Amenity {} doesn't exist".format(id))
     
     @api.doc('update_amenities')
@@ -105,10 +104,10 @@ class AmenitiesRetrieve(Resource):
         data['id'] = id
 
         try:
-            updated_city = AmenitiesManager().updateCity(data)
+            updated_amenity = AmenitiesManager().updateAmenity(data)
             return {
-                "message": "amenity updated.",
-                "data": updated_city.toJSON()
+                "message": "Amenity updated.",
+                "data": updated_amenity.toJSON()
             }, 201
         except ValueError as e:
             make_error(api, 400, e)
@@ -118,9 +117,9 @@ class AmenitiesRetrieve(Resource):
     @api.doc('delete_amenities')
     def delete(self, id):
         """Delete a amenity"""
-        city = AmenitiesManager().getAmenity(id)
-        if not city:
-            make_error(api, 404, "City {} doesn't exist".format(id))
+        amenity = AmenitiesManager().getAmenity(id)
+        if not amenity:
+            make_error(api, 404, "Amenity {} doesn't exist".format(id))
 
-        AmenitiesManager().deleteCity(id) 
+        AmenitiesManager().deleteAmenity(id) 
         return '', 204        

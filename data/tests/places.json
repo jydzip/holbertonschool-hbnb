@@ -1,36 +1,36 @@
 {
-    "80ba1da9-5614-4817-8712-2680da621d91": {
+    "ca0b73f7-4e9c-44ce-a776-4b7bff9a8a4b": {
         "name": "Appartment One Updated",
         "description": "Good appartment in city.",
         "address": "1 Rue de la place 75000",
-        "city_id": "ce3ab3c4-cb21-4fcb-af84-6eeed5ee2ac8",
+        "city_id": "222ac6c1-ce93-423e-80aa-b5c49dd8874d",
         "latitude": 1.1,
         "longitude": 1.1,
-        "host_id": "5b911c01-6b52-40c2-927e-46d1c86aa504",
+        "host_id": "0acfc8e5-c615-4b17-a4bc-b329effe8af6",
         "number_of_rooms": 5,
         "number_of_bathrooms": 1,
         "price_per_night": 120,
         "max_guests": 4,
         "amenity_ids": [],
-        "id": "80ba1da9-5614-4817-8712-2680da621d91",
-        "created_at": "2024-06-17 17:18:45.823766",
-        "updated_at": "2024-06-17 17:18:45.826770"
+        "id": "ca0b73f7-4e9c-44ce-a776-4b7bff9a8a4b",
+        "created_at": "2024-06-17 18:15:58.563673",
+        "updated_at": "2024-06-17 18:15:58.569886"
     },
-    "80d61de0-c62b-4efe-bb9a-47b429ceaf08": {
+    "5f40e0e1-7523-4a0f-aa62-46c52e71d1d7": {
         "name": "Appartment Two",
         "description": "Bad appartment in city.",
         "address": "2 Rue de la place 75000",
-        "city_id": "ce3ab3c4-cb21-4fcb-af84-6eeed5ee2ac8",
+        "city_id": "222ac6c1-ce93-423e-80aa-b5c49dd8874d",
         "latitude": 1.1,
         "longitude": 1.1,
-        "host_id": "5b911c01-6b52-40c2-927e-46d1c86aa504",
+        "host_id": "0acfc8e5-c615-4b17-a4bc-b329effe8af6",
         "number_of_rooms": 2,
         "number_of_bathrooms": 1,
         "price_per_night": 50,
         "max_guests": 1,
         "amenity_ids": [],
-        "id": "80d61de0-c62b-4efe-bb9a-47b429ceaf08",
-        "created_at": "2024-06-17 17:18:45.825762",
-        "updated_at": "2024-06-17 17:18:45.825762"
+        "id": "5f40e0e1-7523-4a0f-aa62-46c52e71d1d7",
+        "created_at": "2024-06-17 18:15:58.568887",
+        "updated_at": "2024-06-17 18:15:58.568887"
     }
 }
