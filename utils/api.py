@@ -1,6 +1,3 @@
-from flask import Response
-
-
 def make_error(api, status_code: int, message: str):
     error_msg = f"{status_code} "
 
@@ -11,4 +8,4 @@ def make_error(api, status_code: int, message: str):
     elif status_code == 400:
         error_msg += "Bad Request"
 
-    api.abort(409, f"{message}", error=error_msg)
+    api.abort(status_code, f"{message}", error=error_msg)

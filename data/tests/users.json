@@ -1,0 +1,22 @@
+{
+    "9988c9f0-d862-4963-a4a7-972c8bbf8775": {
+        "email": "test1@gmail.com",
+        "password": "test1",
+        "first_name": "Jon Updated",
+        "last_name": "Doe",
+        "age": 80,
+        "id": "9988c9f0-d862-4963-a4a7-972c8bbf8775",
+        "created_at": "2024-06-17 17:18:45.880323",
+        "updated_at": "2024-06-17 17:18:45.882333"
+    },
+    "f5dc3c0d-0727-4cfb-9bb0-dc3a5b5985ef": {
+        "email": "test2@gmail.com",
+        "password": "test2",
+        "first_name": "Doe",
+        "last_name": "Jone",
+        "age": 50,
+        "id": "f5dc3c0d-0727-4cfb-9bb0-dc3a5b5985ef",
+        "created_at": "2024-06-17 17:18:45.881318",
+        "updated_at": "2024-06-17 17:18:45.881318"
+    }
+}

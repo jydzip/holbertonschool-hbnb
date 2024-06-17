@@ -127,6 +127,15 @@ class TestCities(unittest.TestCase):
             self.assertEqual(
                 getattr(self.city1, key), data[key]
             )
+    
+    def test_api_delete_city(self):
+        response = self.client.delete(f"/cities/{self.city1.id}")
+        self.assertEqual(response.status_code, 204)
+
+        response = self.client.get(f"/cities/{self.city1.id}")
+        self.assertEqual(response.status_code, 404)
+
+        self.city1 = self.create_city_test(self.data1)
 
 if __name__ == '__main__':
     unittest.main()
