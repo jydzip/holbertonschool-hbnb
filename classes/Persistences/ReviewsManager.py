@@ -14,5 +14,5 @@ class ReviewsManager(DataManager):
     def getReviews(self) -> List[Reviews]:
         return self._all()
 
-    def getReviews(self, id:int) -> (Reviews | None):
+    def getReview(self, id:int) -> (Reviews | None):
         return self._get(id)

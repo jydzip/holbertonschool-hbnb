@@ -1,9 +1,11 @@
+from flask import request
 from flask_restx import Namespace, Resource, fields
 from classes.Persistences.AmenitiesManager import AmenitiesManager
+from utils.api import make_error
 
 from .amenities import AmenitiesManager
 
-api = Namespace("amenities", description="********************")
+api = Namespace("amenities", description="")
 
 
 amenities_model = api.model(
@@ -14,16 +16,65 @@ amenities_model = api.model(
     },
 )
 
+amenities_model_entry = api.model(
+
+    "amenitiesEntry",
+    {
+        "name": fields.String(required=True, description="The city name")
+    }
+)
+
+amenities_edit_response = api.model(
+    "amenitiesEditResponse", 
+    {
+        "message": fields.String(required=True, description="Message Response"),
+        "data": fields.Nested(amenities_model),
+    },
+)
+
+amenities_model_error = api.model(
+    "amenitiesError", 
+    {
+        "message": fields.String(required=True, description="Message response error"),
+        "error": fields.String(required=True, description="Error status code"),
+    },
+)
+
 @api.route("/")
 class AmenitiesList(Resource):
     @api.doc("list_amenities")
     @api.marshal_list_with(amenities_model)
     def get(self):
-        """List all Amenities"""
+        """List all Amenity"""
         amenities = AmenitiesManager().getAmenity()
         if not amenities:
             return []
-        return [amenity.toJSON() for amenity in amenities]
+        return [amenity.toJSON() for amenity in amenities]          
+
+    @api.doc('create_Amenities')
+    @api.expect(amenities_model_entry)
+    @api.marshal_with(amenities_edit_response, code=201)
+    @api.marshal_with(amenities_model_error, code=400)
+    @api.marshal_with(amenities_model_error, code=409)
+    def post(self):
+        """Create a amenities"""
+        if not request.is_json:
+            make_error(api, 400, "Missing JSON in request.")
+
+        data: dict = request.json
+
+        try:
+            new_amenity = AmenitiesManager().createCity({
+                "name": data.get("name", None)
+            })
+            return {
+                "message": "Amenity created.",
+                "data": new_amenity
+            }, 201
+        except ValueError as e:
+            make_error(api, 400, e)
+        except TypeError as e:
+            make_error(api, 409, e)
     
 @api.route("/<id>")
 @api.param("id", "The amenities identifier")
@@ -37,3 +88,39 @@ class AmenitiesRetrieve(Resource):
             return Amenity()
         api.abort(404, "Amenity {} doesn't exist".format(id))
     
+    @api.doc('update_amenities')
+    @api.expect(amenities_model_entry)
+    @api.marshal_with(amenities_edit_response, code=201)
+    @api.marshal_with(amenities_model_error, code=400)
+    def put(self, id):
+        """Update a amenity"""
+        if not request.is_json:
+            make_error(api, 400, "Missing JSON in request.")
+
+        amenity = AmenitiesManager().getAmenity(id)
+        if not amenity:
+            make_error(api, 404, "amenity {} doesn't exist".format(id))
+
+        data: dict = request.json
+        data['id'] = id
+
+        try:
+            updated_city = AmenitiesManager().updateCity(data)
+            return {
+                "message": "amenity updated.",
+                "data": updated_city.toJSON()
+            }, 201
+        except ValueError as e:
+            make_error(api, 400, e)
+        except TypeError as e:
+            make_error(api, 409, e)
+
+    @api.doc('delete_amenities')
+    def delete(self, id):
+        """Delete a amenity"""
+        city = AmenitiesManager().getAmenity(id)
+        if not city:
+            make_error(api, 404, "City {} doesn't exist".format(id))
+
+        AmenitiesManager().deleteCity(id) 
+        return '', 204        
