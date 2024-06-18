@@ -49,7 +49,7 @@ class ReviewsManager(DataManager):
                 reviews_result.append(review)
         return reviews_result
 
-    def getReview(self, review_id: str) -> (Reviews | None):
+    def getReview(self, review_id: str) -> Reviews:
         """
             Retrieves a review by its identifier.
             Args:

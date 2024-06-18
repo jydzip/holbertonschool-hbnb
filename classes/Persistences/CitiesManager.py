@@ -24,7 +24,7 @@ class CitiesManager(DataManager):
                 cities_result.append(city)
         return cities_result
 
-    def getCity(self, city_id:int) -> (Cities | None):
+    def getCity(self, city_id:int) -> Cities:
         """
             Retrieves a city by its identifier.
             Args:

@@ -7,7 +7,7 @@ class PlacesManager(DataManager):
     """
         Places Manager
     """
-    _TABLE_DB = "Places"
+    _TABLE_DB = "places"
     _TABLE_CLASS = Places
     _TABLE_KEY_ID = "id"
 
@@ -19,7 +19,7 @@ class PlacesManager(DataManager):
         """
         return self._all()
 
-    def getPlace(self, place_id:int) -> (Places | None):
+    def getPlace(self, place_id:int) -> Places:
         """
             Retrieves a place by its identifier.
             Args:

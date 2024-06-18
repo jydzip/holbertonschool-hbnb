@@ -1,20 +1,20 @@
 {
-    "3b69cad0-9dd1-4744-b521-9245172cf69d": {
-        "place_id": "5f580c5e-2479-411e-9313-a6c9a2903122",
-        "user_id": "bfd88de1-ad98-4868-9775-98d5cbaf182c",
+    "84d1ee5c-e7c7-4e6a-b6c5-7e4304573412": {
+        "place_id": "77fc5de9-d8bf-4c97-a041-6925dbdd74c0",
+        "user_id": "f89db073-e59c-4453-b574-3f14a7aed37d",
         "rating": 4,
         "comment": "Excellent appartment!",
-        "id": "3b69cad0-9dd1-4744-b521-9245172cf69d",
-        "created_at": "2024-06-18 02:04:14.901110",
-        "updated_at": "2024-06-18 02:04:14.901110"
+        "id": "84d1ee5c-e7c7-4e6a-b6c5-7e4304573412",
+        "created_at": "2024-06-18 07:33:15.377735",
+        "updated_at": "2024-06-18 07:33:15.377738"
     },
-    "6fb8bed8-d19c-4e94-8e45-86904dcbf211": {
-        "place_id": "e1be57f8-d6ac-413b-9672-2e9a2f213555",
-        "user_id": "bfd88de1-ad98-4868-9775-98d5cbaf182c",
+    "e659886b-2634-46ba-a0cf-80e2f08b631e": {
+        "place_id": "f016c95e-869b-4706-b320-6c8712cb26c7",
+        "user_id": "f89db073-e59c-4453-b574-3f14a7aed37d",
         "rating": 1,
         "comment": "Very very bad appartment... not good!",
-        "id": "6fb8bed8-d19c-4e94-8e45-86904dcbf211",
-        "created_at": "2024-06-18 02:04:14.902110",
-        "updated_at": "2024-06-18 02:04:14.902110"
+        "id": "e659886b-2634-46ba-a0cf-80e2f08b631e",
+        "created_at": "2024-06-18 07:33:15.377924",
+        "updated_at": "2024-06-18 07:33:15.377927"
     }
 }

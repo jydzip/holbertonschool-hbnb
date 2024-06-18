@@ -7,7 +7,7 @@ class UsersManager(DataManager):
     """
         Users Manager.
     """
-    _TABLE_DB = "Users"
+    _TABLE_DB = "users"
     _TABLE_CLASS = Users
     _TABLE_KEY_ID = "id"
 
@@ -19,7 +19,7 @@ class UsersManager(DataManager):
         """
         return self._all()
 
-    def getUser(self, user_id: int) -> (Users | None):
+    def getUser(self, user_id: int) -> Users:
         """
             Retrieves a user by its identifier.
             Args:
@@ -29,7 +29,7 @@ class UsersManager(DataManager):
         """
         return self._get(user_id)
 
-    def getUserByEmail(self, email: str) -> (Users | None):
+    def getUserByEmail(self, email: str) -> Users:
         """
             Retrieves a user by its email.
             Args:

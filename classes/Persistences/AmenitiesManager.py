@@ -19,7 +19,7 @@ class AmenitiesManager(DataManager):
         """
         return self._all()
     
-    def getAmenity(self, amenity_id) -> (Amenities | None):
+    def getAmenity(self, amenity_id) -> Amenities:
         """
             Retrieves a amenity by its identifier.
             Args:

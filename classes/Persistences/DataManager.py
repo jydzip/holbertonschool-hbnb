@@ -75,7 +75,7 @@ class DataManager(IPersistenceManager):
             entities.append(self._TABLE_CLASS(data))
         return entities
 
-    def _get(self, entity_id: int | str):
+    def _get(self, entity_id: str):
         """
             Logic to retrieve an entity based on ID and type.
             Arguments:

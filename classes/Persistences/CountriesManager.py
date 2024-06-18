@@ -19,7 +19,7 @@ class CountriesManager(DataManager):
         """
         return self._all()
     
-    def getCountry(self, country_code: str) -> (Countries | None):
+    def getCountry(self, country_code: str) -> Countries:
         """
             Retrieves a country by its identifier.
             Args:

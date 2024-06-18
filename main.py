@@ -29,4 +29,5 @@ api.add_namespace(reviews_API)
 api.init_app(app)
 
 if __name__ == "__main__":
+    print("HBnB API started !")
     app.run(debug=False)
