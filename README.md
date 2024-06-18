@@ -62,3 +62,5 @@ $ docker build -t api-hbnb-evolution .
 ```bash
 $ docker run -d -p 5000:5000 --name api-hbnb-evolution-container -v "$(pwd)/data:/app/data" api-hbnb-evolution
 ```
+
+![IMG](https://raw.githubusercontent.com/jydzip/holbertonschool-hbnb/main/HBnB_diagram.drawio.png)
