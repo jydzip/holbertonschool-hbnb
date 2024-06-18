@@ -60,5 +60,5 @@ $ docker build -t api-hbnb-evolution .
 
 ## Start container
 ```bash
-$ docker run -d -p 5000:5000 --name api-hbnb-evolution-container -e PORT=5000 -v /path/to/host/data:/app/data api-hbnb-evolution
+$ docker run -d -p 5000:5000 --name api-hbnb-evolution-container -v "$(pwd)/data:/app/data" api-hbnb-evolution
 ```
