@@ -97,7 +97,7 @@ class PlacesList(Resource):
             })
             return marshal({
                 "message": "Place created.",
-                "data": new_place
+                "data": new_place.toJSON()
             }, places_model_response), 201
         except ValueError as e:
             make_error(api, 400, e)
@@ -195,7 +195,7 @@ class PlacesRetrieveReviews(Resource):
             })
             return marshal({
                 "message": "Review created.",
-                "data": new_review
+                "data": new_review.toJSON()
             }, reviews_model_response), 201
         except ValueError as e:
             make_error(api, 400, e)

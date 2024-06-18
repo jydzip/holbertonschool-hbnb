@@ -70,7 +70,7 @@ class CitiesList(Resource):
             })
             return marshal({
                 "message": "City created.",
-                "data": new_city
+                "data": new_city.toJSON()
             }, cities_model_response), 201
         except ValueError as e:
             make_error(api, 400, e)

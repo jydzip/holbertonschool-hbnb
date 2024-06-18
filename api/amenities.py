@@ -58,7 +58,7 @@ class AmenitiesList(Resource):
             })
             return marshal({
                 "message": "Amenity created.",
-                "data": new_amenity
+                "data": new_amenity.toJSON()
             }, amenities_model_response), 201
         except ValueError as e:
             make_error(api, 400, e)
