@@ -1,6 +1,10 @@
 # HBnB Evolution: Part 1 (Model + API)
 
+# Description
+
+HBnB Evolution: Part 1 is a project that involves building a model and API for a web application. This repository includes the source code necessary to run the API, along with instructions for setting up the development environment, running the API, formatting code, running tests, and containerizing the application with Docker.
 # Installation
+
 ## 1.1 Get the API
 ```bash
 $ git clone https://{TOKEN}@github.com/jydzip/holbertonschool-hbnb.git
