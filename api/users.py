@@ -1,11 +1,11 @@
 from flask import request
-from flask_restx import Namespace, Resource, fields
+from flask_restx import Namespace, Resource, fields, marshal
 
 from classes.Persistences.UsersManager import UsersManager
 from utils.api import make_error
-from .users import UsersManager
+from .reviews import reviews_model
 
-api = Namespace("users", description="users related operations")
+api = Namespace("users", description="Users related operations")
 
 users_model = api.model(
     "Users", 
@@ -29,45 +29,37 @@ users_model_entry = api.model(
         "age": fields.Integer(required=True, description="The user age"),
     },
 )
-users_edit_response = api.model(
-    "UsersEditResponse", 
+users_model_response = api.model(
+    "UsersResponse", 
     {
         "message": fields.String(required=True, description="Message Response"),
         "data": fields.Nested(users_model),
     },
 )
-users_model_error = api.model(
-    "UsersError", 
-    {
-        "message": fields.String(required=True, description="Message response error"),
-        "error": fields.String(required=True, description="Error status code"),
-    },
-)
 
 
 @api.route("/")
+@api.response(400, "Bad Request")
+@api.response(409, "Conflict")
 class UsersList(Resource):
     @api.doc("list_users")
-    @api.marshal_list_with(users_model)
+    @api.response(200, "List all users", users_model)
     def get(self):
         """List all users"""
         users = UsersManager().getUsers()
         if not users:
-            return []
-        return [user.toJSON() for user in users]
+            return marshal([], users_model)
+        return marshal([user.toJSON() for user in users], users_model)
     
     @api.doc('create_users')
     @api.expect(users_model_entry)
-    @api.marshal_with(users_model, code=201)
-    @api.marshal_with(users_model_error, code=400)
-    @api.marshal_with(users_model_error, code=409)
+    @api.response(201, "Create a user", users_model_response)
     def post(self):
         """Create a user"""
         if not request.is_json:
             make_error(api, 400, "Missing JSON in request.")
 
         data: dict = request.json
-
         try:
             new_user = UsersManager().createUser({
                 "email": data.get("email", None),
@@ -76,10 +68,10 @@ class UsersList(Resource):
                 "last_name": data.get("last_name", None),
                 "age": data.get("age", None)
             })
-            return {
+            return marshal({
                 "message": "User created.",
                 "data": new_user.toJSON()
-            }, 201
+            }, users_model_response), 201
         except ValueError as e:
             make_error(api, 400, e)
         except TypeError as e:
@@ -87,22 +79,21 @@ class UsersList(Resource):
 
 @api.route("/<id>")
 @api.param("id", "The users identifier")
-@api.response(404, "Users not found")
+@api.response(404, "User not found")
+@api.response(400, "Bad Request")
+@api.response(409, "Conflict")
 class UsersRetrieve(Resource):
     @api.doc("get_users")
-    @api.marshal_with(users_model)
+    @api.response(200, "Get a user", users_model)
     def get(self, id):
-        """Fetch a user given its identifier"""
         user = UsersManager().getUser(id)
         if user:
-            return user.toJSON()
+            return marshal(user.toJSON(), users_model)
         make_error(api, 404, "User {} doesn't exist".format(id))
-    
+
     @api.doc('update_users')
     @api.expect(users_model_entry)
-    @api.marshal_with(users_edit_response, code=201)
-    @api.marshal_with(users_model_error, code=400)
-    @api.marshal_with(users_model_error, code=409)
+    @api.response(201, "Update a user", users_model_response)
     def put(self, id):
         """Update a user"""
         if not request.is_json:
@@ -117,16 +108,17 @@ class UsersRetrieve(Resource):
 
         try:
             updated_user = UsersManager().updateUser(data)
-            return {
+            return marshal({
                 "message": "User updated.",
                 "data": updated_user.toJSON()
-            }, 201
+            }, users_model_response), 201
         except ValueError as e:
             make_error(api, 400, e)
         except TypeError as e:
             make_error(api, 409, e)
 
     @api.doc('delete_users')
+    @api.response(204, "Delete a user", users_model_response)
     def delete(self, id):
         """Delete a user"""
         user = UsersManager().getUser(id)
@@ -134,4 +126,26 @@ class UsersRetrieve(Resource):
             make_error(api, 404, "User {} doesn't exist".format(id))
 
         UsersManager().deleteUser(id)
-        return '', 204
+
+        return marshal({
+            "message": "User deleted.",
+            "data": user.toJSON()
+        }, users_model_response), 204
+
+@api.route("/<id>/reviews")
+@api.param("id", "The users identifier")
+@api.response(404, "User not found")
+@api.response(400, "Bad Request")
+class UsersRetrieveReviews(Resource):
+    @api.doc("get_users__reviews")
+    @api.response(200, "List of reviews related to a user", reviews_model)
+    def get(self, id):
+        """List all reviews related to a user"""
+        user = UsersManager().getUser(id)
+        if not user:
+            make_error(api, 404, "User {} doesn't exist".format(id))
+
+        reviews = user.getReviews()
+        if not reviews:
+            return marshal([], reviews_model)
+        return marshal([review.toJSON() for review in reviews], reviews_model)

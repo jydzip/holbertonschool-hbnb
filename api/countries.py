@@ -1,5 +1,7 @@
-from flask_restx import Namespace, Resource, fields
+from flask_restx import Namespace, Resource, fields, marshal
+
 from classes.Persistences.CountriesManager import CountriesManager
+from utils.api import make_error
 
 api = Namespace("countries", description="Countries related operations")
 
@@ -24,42 +26,39 @@ countries__city_model = api.model(
 @api.route("/")
 class CountriesList(Resource):
     @api.doc("list_countries")
-    @api.marshal_list_with(countries_model)
+    @api.response(200, "List all countries", countries_model)
     def get(self):
         """List all countries"""
         countries = CountriesManager().getCountries()
         if not countries:
-            return []
-        return [country.toJSON() for country in countries]
-
+            return marshal([], countries_model)
+        return marshal([country.toJSON() for country in countries], countries_model)
 
 @api.route("/<code>")
 @api.param("code", "The country identifier")
 @api.response(404, "Country not found")
 class CountriesRetrieve(Resource):
     @api.doc("get_countries")
-    @api.marshal_with(countries_model)
+    @api.response(200, "Get a country", countries_model)
     def get(self, code):
-        """Fetch a country given its identifier"""
         country = CountriesManager().getCountry(code)
         if country:
-            return country.toJSON()
-        api.abort(404, "Country {} doesn't exist".format(code))
-
+            return marshal(country.toJSON(), countries_model)
+        make_error(api, 404, "Country {} doesn't exist".format(id))
 
 @api.route("/<code>/cities")
 @api.param("code", "The country identifier")
 @api.response(404, "Country not found")
 class CountriesCities(Resource):
     @api.doc("list_countries__cities")
-    @api.marshal_list_with(countries__city_model)
+    @api.response(200, "List of cities of a country", countries__city_model)
     def get(self, code):
         """Fetch a list of cities of a country"""
         country = CountriesManager().getCountry(code)
-        if country:
-            cities = country.getCities()
-            if not cities:
-                return []
-            return [city.toJSON() for city in cities]
+        if not country:
+            make_error(api, 404, "Country {} doesn't exist".format(id))
 
-        api.abort(404, "Country {} doesn't exist".format(code))
+        cities = country.getCities()
+        if not cities:
+            return marshal([], countries__city_model)
+        return marshal([city.toJSON() for city in cities], countries__city_model)

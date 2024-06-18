@@ -1,22 +1,32 @@
 {
-    "67c498d8-48c1-427c-8538-80a3d7d3bdef": {
-        "email": "test1@gmail.com",
-        "password": "test1",
-        "first_name": "Jon Updated",
-        "last_name": "Doe",
-        "age": 80,
-        "id": "67c498d8-48c1-427c-8538-80a3d7d3bdef",
-        "created_at": "2024-06-17 18:15:58.593460",
-        "updated_at": "2024-06-17 18:15:58.596462"
+    "60a830fd-a0f3-400d-a6d5-51f8580846d7": {
+        "email": "youssoup@gmail.com",
+        "password": "youyou123",
+        "first_name": "Youssoup Updated",
+        "last_name": "Hippocampoous",
+        "age": 20,
+        "id": "60a830fd-a0f3-400d-a6d5-51f8580846d7",
+        "created_at": "2024-06-18 02:04:14.898603",
+        "updated_at": "2024-06-18 02:04:14.902110"
     },
-    "eb92cd95-eeec-4650-92cd-d5ec46100783": {
-        "email": "test2@gmail.com",
-        "password": "test2",
-        "first_name": "Doe",
-        "last_name": "Jone",
-        "age": 50,
-        "id": "eb92cd95-eeec-4650-92cd-d5ec46100783",
-        "created_at": "2024-06-17 18:15:58.595465",
-        "updated_at": "2024-06-17 18:15:58.595465"
+    "bfd88de1-ad98-4868-9775-98d5cbaf182c": {
+        "email": "jeremy@gmail.com",
+        "password": "motdepasse",
+        "first_name": "Jeremy",
+        "last_name": "Hippocampomous",
+        "age": 24,
+        "id": "bfd88de1-ad98-4868-9775-98d5cbaf182c",
+        "created_at": "2024-06-18 02:04:14.898603",
+        "updated_at": "2024-06-18 02:04:14.898603"
+    },
+    "734dd460-6fcd-4939-bfd6-4bc3f313fdd3": {
+        "email": "scandere@gmail.com",
+        "password": "test123",
+        "first_name": "Scandere",
+        "last_name": "Hippocampmomous",
+        "age": 24,
+        "id": "734dd460-6fcd-4939-bfd6-4bc3f313fdd3",
+        "created_at": "2024-06-18 02:04:14.898603",
+        "updated_at": "2024-06-18 02:04:14.898603"
     }
 }

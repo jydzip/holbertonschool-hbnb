@@ -2,8 +2,8 @@ import json
 import datetime
 import uuid
 
-
 from .IPersistenceManager import IPersistenceManager
+
 
 class DataManager(IPersistenceManager):
     _TESTS_MODE = False

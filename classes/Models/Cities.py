@@ -1,5 +1,6 @@
 from .ModelBase import ModelBase
 
+
 class Cities(ModelBase):
     __id: str
     __name: str
@@ -34,6 +35,12 @@ class Cities(ModelBase):
 
     @staticmethod
     def validate_request_data(data: dict, partial=False) -> None:
+        """
+            Correction and checking of POST - PUT data.
+            Args:
+                data (dict): Data to check.
+                partial (bool): Check the data partially or not.
+        """
         entity_attrs = {attr: typ for attr, typ in Cities.__annotations__.items()}
         for key in ["name", "country_code"]:
             key_complete = f"_Cities__{key}"
@@ -47,7 +54,9 @@ class Cities(ModelBase):
                 raise ValueError(f"{key}: is missing.")
             if not isinstance(data_value, entity_attr):
                 raise ValueError(f"{key}: value {entity_attr} is excepted.")
-        
+            if isinstance(data_value, str) and not data_value:
+                raise ValueError(f"{key}: value str is empty.")
+
         if key == "age" and data_value <= 0:
             raise ValueError(f"{key}: need to be upper to 0.")
 

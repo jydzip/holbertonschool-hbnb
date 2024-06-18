@@ -1,6 +1,7 @@
 import re
 from .ModelBase import ModelBase
 
+
 class Users(ModelBase):
     __id: str
     __password: str
@@ -48,6 +49,10 @@ class Users(ModelBase):
         """Get the email of user."""
         return self.__email
 
+    def getReviews(self):
+        from classes.Persistences.ReviewsManager import ReviewsManager
+        return ReviewsManager().getReviewsByUser(self.id)
+
     def toJSON(self):
         return {
             "id": self.__id,
@@ -64,6 +69,12 @@ class Users(ModelBase):
 
     @staticmethod
     def validate_request_data(data: dict, partial=False) -> None:
+        """
+            Correction and checking of POST - PUT data.
+            Args:
+                data (dict): Data to check.
+                partial (bool): Check the data partially or not.
+        """
         entity_attrs = {attr: typ for attr, typ in Users.__annotations__.items()}
         for key in ["email", "password", "first_name", "last_name", "age"]:
             key_complete = f"_Users__{key}"
@@ -77,6 +88,11 @@ class Users(ModelBase):
                 raise ValueError(f"{key}: is missing.")
             if not isinstance(data_value, entity_attr):
                 raise ValueError(f"{key}: value {entity_attr} is excepted.")
+            if isinstance(data_value, str) and not data_value:
+                raise ValueError(f"{key}: cannot be an empty str.")
+
+            if key == "age" and data_value <= 0:
+                raise ValueError(f"age: need to be more zero.")
 
     @staticmethod
     def validate_unique_email(email: str):
@@ -87,13 +103,3 @@ class Users(ModelBase):
         user = UsersManager().getUserByEmail(email)
         if user:
             raise TypeError("Email is already used.")
-
-    @staticmethod
-    def validate_first_name(first_name: str):
-        if not first_name:
-            raise ValueError("First_name cannot empty string.")
-
-    @staticmethod
-    def validate_last_name(last_name: str):
-        if not last_name:
-            raise ValueError("Last_name cannot empty string.")

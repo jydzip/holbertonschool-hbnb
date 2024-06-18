@@ -1,36 +1,36 @@
 {
-    "ca0b73f7-4e9c-44ce-a776-4b7bff9a8a4b": {
-        "name": "Appartment One Updated",
+    "5f580c5e-2479-411e-9313-a6c9a2903122": {
+        "name": "Appartment One",
         "description": "Good appartment in city.",
         "address": "1 Rue de la place 75000",
-        "city_id": "222ac6c1-ce93-423e-80aa-b5c49dd8874d",
+        "city_id": "fa0fa006-edd4-473f-9fab-12b399948b96",
         "latitude": 1.1,
         "longitude": 1.1,
-        "host_id": "0acfc8e5-c615-4b17-a4bc-b329effe8af6",
+        "host_id": "60a830fd-a0f3-400d-a6d5-51f8580846d7",
         "number_of_rooms": 5,
         "number_of_bathrooms": 1,
         "price_per_night": 120,
         "max_guests": 4,
         "amenity_ids": [],
-        "id": "ca0b73f7-4e9c-44ce-a776-4b7bff9a8a4b",
-        "created_at": "2024-06-17 18:15:58.563673",
-        "updated_at": "2024-06-17 18:15:58.569886"
+        "id": "5f580c5e-2479-411e-9313-a6c9a2903122",
+        "created_at": "2024-06-18 02:04:14.900106",
+        "updated_at": "2024-06-18 02:04:14.900106"
     },
-    "5f40e0e1-7523-4a0f-aa62-46c52e71d1d7": {
+    "e1be57f8-d6ac-413b-9672-2e9a2f213555": {
         "name": "Appartment Two",
         "description": "Bad appartment in city.",
-        "address": "2 Rue de la place 75000",
-        "city_id": "222ac6c1-ce93-423e-80aa-b5c49dd8874d",
+        "address": "2 Rue de la place 75001",
+        "city_id": "fa0fa006-edd4-473f-9fab-12b399948b96",
         "latitude": 1.1,
         "longitude": 1.1,
-        "host_id": "0acfc8e5-c615-4b17-a4bc-b329effe8af6",
+        "host_id": "60a830fd-a0f3-400d-a6d5-51f8580846d7",
         "number_of_rooms": 2,
         "number_of_bathrooms": 1,
         "price_per_night": 50,
         "max_guests": 1,
         "amenity_ids": [],
-        "id": "5f40e0e1-7523-4a0f-aa62-46c52e71d1d7",
-        "created_at": "2024-06-17 18:15:58.568887",
-        "updated_at": "2024-06-17 18:15:58.568887"
+        "id": "e1be57f8-d6ac-413b-9672-2e9a2f213555",
+        "created_at": "2024-06-18 02:04:14.901110",
+        "updated_at": "2024-06-18 02:04:14.901110"
     }
 }

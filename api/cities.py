@@ -1,10 +1,10 @@
-from flask_restx import Namespace, Resource, fields
 from flask import request
+from flask_restx import Namespace, Resource, fields, marshal
+
 from classes.Persistences.CitiesManager import CitiesManager
 from utils.api import make_error
 
 api = Namespace("cities", description="Cities related operations")
-
 
 cities__country_model = api.model(
     "Cities__Country",
@@ -32,78 +32,68 @@ cities_model_entry = api.model(
         "country_code": fields.String(required=True, description="The city country_code")
     },
 )
-
-cities_edit_response = api.model(
-    "CitiesEditResponse", 
+cities_model_response = api.model(
+    "CitiesResponse", 
     {
         "message": fields.String(required=True, description="Message Response"),
         "data": fields.Nested(cities_model),
     },
 )
-cities_model_error = api.model(
-    "CitiesError", 
-    {
-        "message": fields.String(required=True, description="Message response error"),
-        "error": fields.String(required=True, description="Error status code"),
-    },
-)
 
 
 @api.route("/")
+@api.response(400, "Bad Request")
+@api.response(409, "Conflict")
 class CitiesList(Resource):
     @api.doc("list_cities")
-    @api.marshal_list_with(cities_model)
+    @api.response(200, "List all cities", cities_model)
     def get(self):
         """List all cities"""
         cities = CitiesManager().getCities()
         if not cities:
-            return []
-        return [city.toJSON() for city in cities]
+            return marshal([], cities_model)
+        return marshal([city.toJSON() for city in cities], cities_model)
 
     @api.doc('create_cities')
     @api.expect(cities_model_entry)
-    @api.marshal_with(cities_edit_response, code=201)
-    @api.marshal_with(cities_model_error, code=400)
-    @api.marshal_with(cities_model_error, code=409)
+    @api.response(201, "Create a city", cities_model_response)
     def post(self):
         """Create a city"""
         if not request.is_json:
             make_error(api, 400, "Missing JSON in request.")
 
         data: dict = request.json
-
         try:
             new_city = CitiesManager().createCity({
                 "name": data.get("name", None),
                 "country_code": data.get("country_code", None)
             })
-            return {
+            return marshal({
                 "message": "City created.",
                 "data": new_city
-            }, 201
+            }, cities_model_response), 201
         except ValueError as e:
             make_error(api, 400, e)
         except TypeError as e:
             make_error(api, 409, e)
 
-
 @api.route("/<id>")
 @api.param("id", "The city identifier")
 @api.response(404, "City not found")
+@api.response(400, "Bad Request")
+@api.response(409, "Conflict")
 class CitiesRetrieve(Resource):
     @api.doc("get_cities")
-    @api.marshal_with(cities_model, code=200)
+    @api.response(200, "Get a city", cities_model)
     def get(self, id):
-        """Fetch a city given its identifier"""
         city = CitiesManager().getCity(id)
         if city:
-            return city.toJSON()
+            return marshal(city.toJSON(), cities_model)
         make_error(api, 404, "City {} doesn't exist".format(id))
 
     @api.doc('update_cities')
     @api.expect(cities_model_entry)
-    @api.marshal_with(cities_edit_response, code=201)
-    @api.marshal_with(cities_model_error, code=400)
+    @api.response(201, "Update a city", cities_model_response)
     def put(self, id):
         """Update a city"""
         if not request.is_json:
@@ -118,16 +108,17 @@ class CitiesRetrieve(Resource):
 
         try:
             updated_city = CitiesManager().updateCity(data)
-            return {
+            return marshal({
                 "message": "City updated.",
                 "data": updated_city.toJSON()
-            }, 201
+            }, cities_model_response), 201
         except ValueError as e:
             make_error(api, 400, e)
         except TypeError as e:
             make_error(api, 409, e)
 
     @api.doc('delete_cities')
+    @api.response(204, "Delete a city", cities_model_response)
     def delete(self, id):
         """Delete a city"""
         city = CitiesManager().getCity(id)
@@ -135,4 +126,8 @@ class CitiesRetrieve(Resource):
             make_error(api, 404, "City {} doesn't exist".format(id))
 
         CitiesManager().deleteCity(id)
-        return '', 204
+
+        return marshal({
+            "message": "City deleted.",
+            "data": city.toJSON()
+        }, cities_model_response), 204

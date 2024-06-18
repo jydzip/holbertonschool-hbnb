@@ -31,6 +31,11 @@ $ .venv/Scripts/activate.ps1
 $ pip install -r requirements.txt
 ```
 
+# Launch API
+```bash
+$ python main.py
+```
+
 ## Code formater
 - Check if reformatted possible
 ```bash
@@ -45,4 +50,15 @@ $ black **/*.py
 ## Launch all tests
 ```bash
 $ python -m unittest discover -p 'test_*.py'
+```
+
+# Containerize with Docker
+## Build container
+```bash
+$ docker build -t api-hbnb-evolution .
+```
+
+## Start container
+```bash
+$ docker run -d -p 5000:5000 --name api-hbnb-evolution-container -e PORT=5000 -v /path/to/host/data:/app/data api-hbnb-evolution
 ```

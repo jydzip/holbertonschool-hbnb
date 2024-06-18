@@ -1,1 +1,20 @@
-{}
+{
+    "6d52fcb8-a61a-4f54-84d3-c7c53cf364fe": {
+        "place_id": "f9fc2086-4024-4b6f-897b-882e90460adb",
+        "user_id": "b20cc9a4-084d-4c07-a3e7-5a2802e2a9df",
+        "rating": 4,
+        "comment": "Excellent appartment!",
+        "id": "6d52fcb8-a61a-4f54-84d3-c7c53cf364fe",
+        "created_at": "2024-06-18 00:33:21.450305",
+        "updated_at": "2024-06-18 00:33:21.450305"
+    },
+    "f387ac6e-5459-4e30-bc44-0c4403ea95a8": {
+        "place_id": "6bf1fdfd-0d66-4083-a95c-c9b1c23e8da7",
+        "user_id": "b20cc9a4-084d-4c07-a3e7-5a2802e2a9df",
+        "rating": 1,
+        "comment": "Very very bad appartment... not good!",
+        "id": "f387ac6e-5459-4e30-bc44-0c4403ea95a8",
+        "created_at": "2024-06-18 00:33:21.450305",
+        "updated_at": "2024-06-18 00:33:21.450305"
+    }
+}

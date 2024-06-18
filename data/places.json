@@ -1,36 +1,36 @@
 {
-    "795892f4-8cb7-49fa-99f3-b3d55d08eee6": {
-        "name": "Appartment One Updated",
+    "f9fc2086-4024-4b6f-897b-882e90460adb": {
+        "name": "Appartment One",
         "description": "Good appartment in city.",
         "address": "1 Rue de la place 75000",
-        "city_id": "1d290a29-3095-4238-97cb-8afbd1b70873",
+        "city_id": "6b11b96c-2e10-4881-a7bf-7e274354cc3e",
         "latitude": 1.1,
         "longitude": 1.1,
-        "host_id": "3add4173-36b1-405c-9986-449f1028e72a",
+        "host_id": "5ff502b0-160b-4377-b3d9-d6204b741124",
         "number_of_rooms": 5,
         "number_of_bathrooms": 1,
         "price_per_night": 120,
         "max_guests": 4,
-        "amenity_ids": [],
-        "id": "795892f4-8cb7-49fa-99f3-b3d55d08eee6",
-        "created_at": "2024-06-17 17:07:18.574349",
-        "updated_at": "2024-06-17 17:07:18.576352"
+        "amenity_ids": ["601b8b18-0f4c-438b-9343-0f61989fd264", "aee886f4-06d2-47c4-9073-ef8d94ded8d6"],
+        "id": "f9fc2086-4024-4b6f-897b-882e90460adb",
+        "created_at": "2024-06-18 00:33:21.448306",
+        "updated_at": "2024-06-18 00:33:21.448306"
     },
-    "e7dd363d-2eaf-4f9c-b907-4fcd7a46c98c": {
+    "6bf1fdfd-0d66-4083-a95c-c9b1c23e8da7": {
         "name": "Appartment Two",
         "description": "Bad appartment in city.",
-        "address": "2 Rue de la place 75000",
-        "city_id": "1d290a29-3095-4238-97cb-8afbd1b70873",
+        "address": "2 Rue de la place 75001",
+        "city_id": "6b11b96c-2e10-4881-a7bf-7e274354cc3e",
         "latitude": 1.1,
         "longitude": 1.1,
-        "host_id": "3add4173-36b1-405c-9986-449f1028e72a",
+        "host_id": "5ff502b0-160b-4377-b3d9-d6204b741124",
         "number_of_rooms": 2,
         "number_of_bathrooms": 1,
         "price_per_night": 50,
         "max_guests": 1,
         "amenity_ids": [],
-        "id": "e7dd363d-2eaf-4f9c-b907-4fcd7a46c98c",
-        "created_at": "2024-06-17 17:07:18.575351",
-        "updated_at": "2024-06-17 17:07:18.575351"
+        "id": "6bf1fdfd-0d66-4083-a95c-c9b1c23e8da7",
+        "created_at": "2024-06-18 00:33:21.449304",
+        "updated_at": "2024-06-18 00:33:21.449304"
     }
 }

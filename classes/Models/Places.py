@@ -1,5 +1,6 @@
 from .ModelBase import ModelBase
 
+
 class Places(ModelBase):
     __id: str
     __name: str
@@ -78,6 +79,12 @@ class Places(ModelBase):
         return self.__host_id
 
     @property
+    def host(self):
+        """Get the user class of place."""
+        from classes.Persistences.UsersManager import UsersManager
+        return UsersManager().getUser(self.host_id)
+
+    @property
     def number_of_rooms(self):
         """Get the number_of_rooms of place."""
         return self.__number_of_rooms
@@ -102,7 +109,26 @@ class Places(ModelBase):
         """Get the amenity_ids of place."""
         return self.__amenity_ids
 
+    @property
+    def amenities(self):
+        """Get list amenities class of place."""
+        from classes.Persistences.AmenitiesManager import AmenitiesManager, Amenities
+        amenities: list[Amenities] = []
+        for amenity_id in self.amenity_ids:
+            amenity = AmenitiesManager().getAmenity(amenity_id)
+            if amenity:
+                amenities.append(amenity)
+        return amenities
+
+    def getReviews(self):
+        from classes.Persistences.ReviewsManager import ReviewsManager
+        return ReviewsManager().getReviewsByPlace(self.id)
+
     def toJSON(self):
+        amenities = self.amenities
+        amenities_json = []
+        if amenities:
+            amenities_json = [amenity.toJSON() for amenity in amenities]
         return {
             "id": self.__id,
             "name": self.__name,
@@ -113,10 +139,13 @@ class Places(ModelBase):
             "latitude": self.__latitude,
             "longitude": self.__longitude,
             "host_id": self.__host_id,
+            "host": self.host.toJSON(),
             "number_of_rooms": self.__number_of_rooms,
             "number_of_bathrooms": self.__number_of_bathrooms,
             "price_per_night": self.__price_per_night,
             "max_guests": self.__max_guests,
+            "amenity_ids": self.__amenity_ids,
+            "amenities": amenities_json,
             "created_at": self.created_at,
             "updated_at": self.updated_at
         }
@@ -126,6 +155,12 @@ class Places(ModelBase):
 
     @staticmethod
     def validate_request_data(data: dict, partial=False) -> None:
+        """
+            Correction and checking of POST - PUT data.
+            Args:
+                data (dict): Data to check.
+                partial (bool): Check the data partially or not.
+        """
         entity_attrs = {attr: typ for attr, typ in Places.__annotations__.items()}
         for key in [
             "name", "description", "address", "city_id", "latitude", "longitude",
@@ -136,17 +171,25 @@ class Places(ModelBase):
             entity_attr = entity_attrs.get(key_complete)
             data_value = data.get(key)
 
-            if partial and not data_value:
+            if partial and data_value is None:
                 continue
 
             if not entity_attr:
                 raise ValueError(f"{key}: is missing.")
             if not isinstance(data_value, entity_attr):
                 raise ValueError(f"{key}: value {entity_attr} is excepted.")
+            if isinstance(data_value, str) and not data_value:
+                raise ValueError(f"{key}: cannot be an empty str.")
 
             if key in ["number_of_rooms", "number_of_bathrooms", "max_guests"]:
                 if data_value < 0:
                     raise ValueError(f"{key}: need non-negative integer.")
+            elif key == "latitude":
+                if data_value < -90 or data_value > 90:
+                    raise ValueError(f"latitude: is incorrect, between -90 -> 90.")
+            elif key == "longitude":
+                if data_value < -180 or data_value > 180:
+                    raise ValueError(f"longitude: is incorrect, between -180 -> 180.")
 
     @staticmethod
     def validate_exist_city(city_id: str):
@@ -161,3 +204,11 @@ class Places(ModelBase):
         host = UsersManager().getUser(host_id)
         if not host:
             raise ValueError("host_id: is not a valid host.")
+    
+    @staticmethod
+    def validate_exist_amenities(amenity_ids: list[str]):
+        from classes.Persistences.AmenitiesManager import AmenitiesManager
+        for amenity_id in amenity_ids:
+            amenity = AmenitiesManager().getAmenity(amenity_id)
+            if not amenity:
+                raise ValueError("amenity_ids: amenities are not a valid.")

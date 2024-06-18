@@ -1,5 +1,5 @@
 from .ModelBase import ModelBase
-from ..Persistences.CitiesManager import CitiesManager
+
 
 class Countries(ModelBase):
     __name: str
@@ -9,10 +9,12 @@ class Countries(ModelBase):
         super().__init__(data)
         self.__name = data['name']
         self.__country_code = data['country_code']
-    
+
     def getCities(self):
+        """Get the list cities class of country."""
+        from classes.Persistences.CitiesManager import CitiesManager
         return CitiesManager().getCitiesByCountry(self.__country_code)
-    
+
     @property
     def name(self):
         """Get the name of country."""
